@@ -1,0 +1,101 @@
+{{extend 'layout.html'}}
+<head>
+</head>
+</head>
+<body>
+{{if auth.user_id!=1:}}
+{{head=db(db.categories.id>0).select(db.categories.ALL)}}
+<ul class="nav nav-list" style="float:left">
+<li class="nav-header"><h4>Categories</h4></li>
+{{for i in head:}}
+	<li>{{=A(i['category'],_href=URL('heading',args=i.id))}}</li>
+{{pass}}
+</ul>
+{{pass}}
+<table border=0 style="position:relative;left:200px">
+{{count=1}}
+{{for i in d:}}
+{{temp=i.id}}
+{{all_likes=[]}}
+{{all_likes=db((db.likes.Item_id==temp)&(db.likes.liked_by==auth.user_id)).select(db.likes.ALL)}}
+		<tr>
+			<td>
+				{{=count}}.
+			</td>
+			<td>
+{{if auth.user and auth.user_id!=i['created_by']:}}
+		{{ if len(all_likes)==0:}}
+		<ul class="nav nav-list">
+			<li><pre style="padding:1px;width:12px"><a href="{{=URL('like',args=temp)}}"><i class="icon-arrow-up"></i></a></pre></li>
+			<li><small>{{=i['count_like']}}</small></li>
+			<li><pre style="padding:1px;width:12px"><a href="{{=URL('dislike',args=temp)}}"><i class="icon-arrow-down"></i></a></pre></li>
+		</ul>
+		{{elif all_likes[0]['flag_likes']==1:}}
+		<ul class="nav nav-list">
+		<li><pre style="padding:1px;width:12px;"><a href="{{=URL('like',args=temp)}}"><i class="icon-arrow-up"></i></a></pre></li>
+			<li><small>{{=i['count_like']}}</small></li>
+			<li><pre style="padding:1px;width:12px;" class="btn btn-primary"><a href="{{=URL('dislike',args=temp)}}"><i class="icon-arrow-down"></i></a></pre></li>
+		</ul>
+		{{else:}}
+		<ul class="nav nav-list">
+			<li><pre style="padding:1px;width:12px;" class="btn btn-primary"><a href="{{=URL('like',args=temp)}}"><i class="icon-arrow-up"></i></a></pre></li>
+			<li><small>{{=i['count_like']}}</small></li>
+			<li><pre style="padding:1px;width:12px;"><a href="{{=URL('dislike',args=temp)}}"><i class="icon-arrow-down"></i></a></pre></li>
+		</ul>
+{{pass}}
+{{pass}}
+			</td>
+			<td>
+			<a href="{{=i['url']}}">{{=i['heading']}}</a></br>
+			<small>{{=i['count_comment']}} comments,</small>
+			<small>Posted on <b>{{=i['post']}}</b></small>
+			</td>
+			<!--conditions for the edition and deletion only for the user who created and the admin i have assumed 1 as admin-->
+			{{if auth.user:}}
+			{{if auth.user_id==1 or auth.user_id==i['created_by'] :}}
+			<td >
+				<a href="{{=URL('edit_item',args=i.id)}}">edit</a>
+			</td>
+			<td>
+				<a href="{{=URL('delete_item',args=i.id)}}">delete</a>
+			</td>
+			{{else:}}
+			<td>
+			</td>
+			<td>
+			</td>
+{{pass}}
+{{pass}}
+			<td>
+			<form action="{{=URL('post',args=i.id)}}">
+			<button type="submit" class="btn btn-info">Comments</button>
+			</form>
+			</td>
+		</tr>
+{{count+=1}}
+{{if count==11:}}
+{{break}}
+{{pass}}
+{{pass}}
+	</table>
+</ol>
+<div style="position:fixed;top:200px;right:60px;">
+	<form action="{{=URL('link')}}">
+		<button type="submit" class="btn btn-success">Submit a Link on the left</button>
+	</form>
+	</div>
+</body>
+{{if auth.user_id==1:}}
+<div style="position:fixed;top:250px;right:60px;">
+	<form action="{{=URL('list')}}">
+		<button type="submit" class="btn btn-success">User's List</button>
+	</form>
+	</div>
+</body>
+<div style="position:fixed;top:300px;right:60px;">
+	<form action="{{=URL('categories')}}">
+		<button type="submit" class="btn btn-success">Categories</button>
+	</form>
+	</div>
+</body>
+{{pass}}

@@ -1,0 +1,22 @@
+{{extend 'layout.html'}}
+{{=form}}
+<table>
+<ul>
+	{{for i in lis:}}
+
+		<tr>
+				<td>
+			<li>
+			<a href="{{=URL('heading',args=i.id)}}">{{=i['category']}}</a> 
+				</td><td>
+				<form action="{{=URL('delete_cat',args=i.id)}}">
+			<button type="submit"><i class="icon-trash"></i></button>
+			</form>
+				</td>
+		</tr>
+			</li>
+
+{{pass}}
+</ul>
+</table>
+

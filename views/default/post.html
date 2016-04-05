@@ -1,0 +1,67 @@
+{{extend 'layout.html'}}
+{{if auth.user:}}
+	{{=form}}
+{{pass}}
+<table border=0>
+<ol>
+{{for i in all_comments:}}
+		<tr>
+		<td>
+		<li>
+		<table border=0 style="padding:3px">
+		<tr>
+			<td>
+			<div class="text-error">
+				{{=i['comments']}}</div>
+			</td><td> <i class="muted">BY </i></td><td> <b><div class="text-success">{{=db.auth_user[i['commented_by']].username}}</b></div></td>
+		</tr>
+		</li>
+		</table>
+		</td>
+			<td style="padding:15px">
+			{{if auth.user:}}
+			{{if (auth.user_id==1) or (auth.user_id==i['commented_by']) | (auth.user_id==cret_by[0]['created_by']):}}
+			<a class="nav nav-tabs"href="{{=URL('edit',args=i.id)}}">edit</a>
+			</td>
+			<td style="padding:15px">
+			<a class="nav nav-tabs" href="{{=URL('delete',args=i.id)}}">delete</a>
+			</td>
+			<td>	
+				
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<small class="muted">posted on <b>{{=i['post']}}</b></small>	
+			</td>
+		</tr>
+		</ol>
+{{pass}}
+{{pass}}
+{{pass}}
+</table>
+<!--{{if auth.user and auth.user_id!=cret_by[0]['created_by']:}}
+{{if len(all_likes)==0:}}
+<ul class="nav nav-list">
+<li><pre style="width:8px"><a href="{{=URL('like',args=temp)}}"><i class="icon-arrow-up"></i></a></pre></li>
+<li><pre style="width:8px"><a href="{{=URL('dislike',args=temp)}}"><i class="icon-arrow-down"></i></a></pre></li>
+</ul>
+<form action="{{=URL('dislike',args=temp)}}">
+	<button type="submit">Dislike</button>
+</form>
+{{elif all_likes[0]['flag_likes']==1:}}
+<ul class="nav nav-list">
+<li><pre style="width:8px"><a href="{{=URL('like',args=temp)}}"><i class="icon-arrow-up"></i></a></li>
+<li><pre style="width:8px"><i class="icon-arrow-down"></i></pre></li>
+</ul>
+{{else:}}
+<ul class="nav nav-list">
+<li><pre style="width:8px"><i class="icon-arrow-up"></i></pre></li>
+<li><pre style="width:8px""><a href="{{=URL('dislike',args=temp)}}"><i class="icon-arrow-down"></i></a></pre></li>
+</ul>
+{{pass}}
+{{pass}}
+{{pass}}
+{{pass}}
+
+

@@ -1,0 +1,18 @@
+{{extend 'layout.html'}}
+<table>
+<ul>
+	{{for i in lis:}}
+		<tr>
+		<td>
+		<li>
+		<a href="{{=URL('user_list',args=i.id)}}">{{=i['username']}}</a>&nbsp &nbsp &nbsp
+		</td><td>
+		<form action="{{=URL('delete_user',args=i.id)}}">
+		<button type="submit"><i class="icon-trash"></i></button>
+		</form>
+		</td>
+		</li>
+		</tr>
+{{pass}}
+</ul>
+</table>

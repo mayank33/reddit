@@ -1,0 +1,105 @@
+timestamp: 2013-08-25T16:47:17.936105
+CREATE TABLE auth_user(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(128),
+    last_name CHAR(128),
+    email CHAR(512),
+    username CHAR(128),
+    password CHAR(512),
+    registration_key CHAR(512),
+    reset_password_key CHAR(512),
+    registration_id CHAR(512),
+    User_Type CHAR(512)
+);
+success!
+timestamp: 2013-08-25T16:47:18.060114
+CREATE TABLE auth_group(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2013-08-25T16:47:18.183441
+CREATE TABLE auth_membership(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE
+);
+success!
+timestamp: 2013-08-25T16:47:18.318438
+CREATE TABLE auth_permission(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE,
+    name CHAR(512),
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2013-08-25T16:47:18.443343
+CREATE TABLE auth_event(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    time_stamp TIMESTAMP,
+    client_ip CHAR(512),
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    origin CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2013-08-25T16:47:18.578126
+CREATE TABLE auth_cas(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    created_on TIMESTAMP,
+    service CHAR(512),
+    ticket CHAR(512),
+    renew CHAR(1)
+);
+success!
+timestamp: 2013-08-25T16:55:36.200941
+CREATE TABLE Item(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Category CHAR(512),
+    Heading CHAR(512),
+    URL TEXT
+);
+success!
+timestamp: 2013-08-25T17:10:34.268578
+ALTER TABLE Item ADD count_dislike INTEGER;
+timestamp: 2013-08-25T17:10:34.440245
+ALTER TABLE Item ADD created_by INTEGER;
+timestamp: 2013-08-25T17:10:34.575310
+ALTER TABLE Item ADD count_comment INTEGER;
+timestamp: 2013-08-25T17:10:34.720238
+ALTER TABLE Item ADD count_like INTEGER;
+timestamp: 2013-08-25T17:11:01.463919
+CREATE TABLE comment_item(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Item_id INTEGER REFERENCES item (id) ON DELETE CASCADE,
+    commented_by INTEGER,
+    comments TEXT
+);
+success!
+timestamp: 2013-08-25T18:41:28.664595
+ALTER TABLE Item ADD ranks INTEGER;
+timestamp: 2013-08-27T15:49:54.486488
+ALTER TABLE comment_item ADD likes INTEGER;
+timestamp: 2013-08-27T15:53:57.049578
+CREATE TABLE likes(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Item_id INTEGER REFERENCES Item (id) ON DELETE CASCADE,
+    liked_by INTEGER,
+    flag_likes INTEGER
+);
+success!
+timestamp: 2013-08-28T10:48:55.535457
+ALTER TABLE Item ADD post TIMESTAMP;
+timestamp: 2013-08-28T10:48:55.701633
+ALTER TABLE comment_item ADD post TIMESTAMP;
+timestamp: 2013-08-30T15:02:15.792896
+CREATE TABLE categories(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    category CHAR(512)
+);
+success!
+timestamp: 2013-09-01T12:23:21.676679
+ALTER TABLE Item ADD video INTEGER;
